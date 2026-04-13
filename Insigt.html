@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MercadoNews | Inteligência & Expansão</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Variáveis de Cores */
+        :root {
+            --primary-color: #0488bc;
+            --primary-dark: #036b94;
+            --secondary-color: #fca311;
+            --bg-color: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+        }
+
+        /* Reset Básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        /* Cabeçalho - Estilo News */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header h1 span {
+            font-weight: 300;
+            color: #e0f2f9;
+        }
+
+        .live-badge {
+            background-color: #e63946;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+        }
+
+        /* Layout do Dashboard */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Cartões de Informação */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        /* KPIs (Indicadores) */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .kpi-box {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .kpi-box h3 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .kpi-box p {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Gráficos */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Feed de Notícias (Sidebar) */
+        .news-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .news-item {
+            padding: 1rem;
+            background-color: var(--bg-color);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .news-item:hover {
+            transform: translateX(5px);
+            background-color: #e8eff3;
+        }
+
+        .news-item .tag {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+
+        .news-item h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mercado<span>News</span></h1>
+        <div class="live-badge">● MERCADO EM TEMPO REAL</div>
+    </header>
+
+    <div class="container">
+        <main>
+            <div class="kpi-grid">
+                <div class="kpi-box">
+                    <h3>Volume de Investimentos (2025/26)</h3>
+                    <p>R$ 142 Bi</p>
+                </div>
+                <div class="kpi-box">
+                    <h3>Novas Multinacionais</h3>
+                    <p>+47</p>
+                </div>
+                <div class="kpi-box" style="background: linear-gradient(135deg, #fca311, #e08e00);">
+                    <h3>Expansões Nacionais</h3>
+                    <p>+120</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Investimentos por Setor: Nacionais vs. Estrangeiras</h2>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Radar de Empresas - Principais Movimentações</h2>
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="background-color: #f4f7f9; color: var(--primary-dark);">
+                            <th style="padding: 10px; border-bottom: 2px solid #ddd;">Empresa</th>
+                            <th style="padding: 10px; border-bottom: 2px solid #ddd;">Origem</th>
+                            <th style="padding: 10px; border-bottom: 2px solid #ddd;">Setor</th>
+                            <th style="padding: 10px; border-bottom: 2px solid #ddd;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>BYD</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">China 🇨🇳</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Automotivo</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee; color: green;">Construção Fábrica (BA)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>WEG</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Brasil 🇧🇷</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Energia/Indústria</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee; color: green;">Expansão Planta (SC/MG)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>AWS (Amazon)</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">EUA 🇺🇸</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Tecnologia/Cloud</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee; color: #0488bc;">Aporte R$ 10 Bi (SP)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Mercado Livre</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Argentina 🇦🇷</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">E-commerce</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee; color: green;">Novos CDs Nordeste</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <aside>
+            <div class="card">
+                <h2>Origem do Capital Estrangeiro</h2>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Últimas Notícias (Expansão)</h2>
+                <div class="news-feed">
+                    <div class="news-item">
+                        <span class="tag">Automobilístico</span>
+                        <h4>GWM Brasil inicia contratações para fábrica em Iracemápolis</h4>
+                        <p>A montadora chinesa acelera a adaptação da antiga fábrica da Mercedes-Benz...</p>
+                    </div>
+                    <div class="news-item">
+                        <span class="tag">Infraestrutura</span>
+                        <h4>CCR arremata novos lotes de rodovias e prevê R$ 8 bi em obras</h4>
+                        <p>Gigante nacional de infraestrutura consolida portfólio no Sudeste e Sul...</p>
+                    </div>
+                    <div class="news-item">
+                        <span class="tag">Varejo</span>
+                        <h4>Shein nacionaliza 50% de sua produção faturada no Brasil</h4>
+                        <p>Plataforma atinge meta de parcerias com confecções locais antecipadamente...</p>
+                    </div>
+                    <div class="news-item">
+                        <span class="tag">Tecnologia</span>
+                        <h4>Embraer Eve recebe novos aportes para desenvolvimento do eVTOL</h4>
+                        <p>Carro voador elétrico da companhia brasileira atrai investimentos da Ásia e EUA...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Configuração Global do Chart.js
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.color = '#666';
+
+        // Gráfico de Barras (Setores)
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Tecnologia (TI/Cloud)', 'Automotivo (EVs)', 'Energia Renovável', 'E-commerce/Logística', 'Agronegócio'],
+                datasets: [
+                    {
+                        label: 'Multinacionais Migrando (R$ Bi)',
+                        data: [25, 32, 18, 15, 10],
+                        backgroundColor: '#0488bc', // Cor base solicitada
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Empresas Nacionais Expandindo (R$ Bi)',
+                        data: [12, 5, 28, 22, 45],
+                        backgroundColor: '#fca311', // Cor secundária para contraste
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#eee'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Rosca (Origem do Capital)
+        const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+        const doughnutChart = new Chart(ctxDoughnut, {
+            type: 'doughnut',
+            data: {
+                labels: ['Ásia', 'América do Norte', 'Europa', 'América Latina (Ex-BR)'],
+                datasets: [{
+                    data: [45, 30, 20, 5],
+                    backgroundColor: [
+                        '#0488bc', // Cor principal
+                        '#036b94', // Tom mais escuro
+                        '#50b2d6', // Tom mais claro
+                        '#a8d9ec'  // Tom muito claro
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            boxWidth: 12
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
